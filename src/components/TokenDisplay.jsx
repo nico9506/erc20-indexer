@@ -3,7 +3,14 @@ import { Box, Flex, Heading, Image, SimpleGrid, Text } from "@chakra-ui/react";
 
 function TokenDisplay({ results, hasQueried, tokenDataObjects }) {
   return (
-    <Box w="100vw">
+    <Box
+      w="100vw"
+      maxW="1200px"
+      boxShadow="md"
+      mb="4"
+      mt="16"
+      backgroundColor="black"
+    >
       <Flex
         w="100%"
         flexDirection="column"
@@ -13,7 +20,14 @@ function TokenDisplay({ results, hasQueried, tokenDataObjects }) {
         <Heading my={10}>ERC-20 Token Balances</Heading>
 
         {hasQueried && results?.tokenBalances?.length > 0 ? (
-          <SimpleGrid w="90vw" columns={[1, 2, 3, 4]} spacing={8} mt={8}>
+          <SimpleGrid
+            w="95%"
+            columns={[1, 2, 3, 4]}
+            spacing={8}
+            padding={4}
+            pb={12}
+            gap={8}
+          >
             {results.tokenBalances.map((token, i) => {
               const meta = tokenDataObjects?.[i];
 
@@ -22,7 +36,7 @@ function TokenDisplay({ results, hasQueried, tokenDataObjects }) {
                   key={token.contractAddress}
                   flexDir="column"
                   color="white"
-                  bg="blue.500"
+                  bg="darkslategrey"
                   borderRadius="xl"
                   p={4}
                   boxShadow="md"
