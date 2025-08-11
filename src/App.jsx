@@ -6,23 +6,23 @@ import {
   Center,
   Flex,
   Heading,
-  Image,
   Input,
-  SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import TokenDisplay from "./components/TokenDisplay";
 const ALCHEMY_API_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
 
 function App() {
   const [userAddress, setUserAddress] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState({});
   const [hasQueried, setHasQueried] = useState(false);
   const [tokenDataObjects, setTokenDataObjects] = useState([]);
 
   async function getTokenBalance() {
     const config = {
       apiKey: ALCHEMY_API_KEY,
-      network: Network.ETH_MAINNET,
+      network: Network.ETH_SEPOLIA,
+      // network: Network.ETH_MAINNET,
     };
 
     const alchemy = new Alchemy(config);
@@ -81,41 +81,19 @@ function App() {
           />
           <Button
             fontSize={20}
-            onClick={getTokenBalance}
+            onClick={async () => await getTokenBalance()}
             mt={36}
             bgColor="blue"
           >
             Check ERC-20 Token Balances
           </Button>
 
-          <Heading my={36}>ERC-20 token balances:</Heading>
-
           {hasQueried ? (
-            <SimpleGrid w={"90vw"} columns={4} spacing={24}>
-              {results.tokenBalances.map((e, i) => {
-                return (
-                  <Flex
-                    flexDir={"column"}
-                    color="white"
-                    bg="blue"
-                    w={"20vw"}
-                    key={e.id}
-                  >
-                    <Box>
-                      <b>Symbol:</b> ${tokenDataObjects[i].symbol}&nbsp;
-                    </Box>
-                    <Box>
-                      <b>Balance:</b>&nbsp;
-                      {Utils.formatUnits(
-                        e.tokenBalance,
-                        tokenDataObjects[i].decimals,
-                      )}
-                    </Box>
-                    <Image src={tokenDataObjects[i].logo} />
-                  </Flex>
-                );
-              })}
-            </SimpleGrid>
+            <TokenDisplay
+              results={results}
+              hasQueried={hasQueried}
+              tokenDataObjects={tokenDataObjects}
+            ></TokenDisplay>
           ) : (
             "Please make a query! This may take a few seconds..."
           )}
